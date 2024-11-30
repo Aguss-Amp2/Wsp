@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom"
 
 const TextArea = () => {
     const [ocultarMicrofono, setOcultarMicrofono] = useState(false)
+    const [text, setText] = useState("") // Estado para almacenar el texto en el input
 
     const handleClickTextarea = () => {
         setOcultarMicrofono(true)
@@ -21,24 +22,46 @@ const TextArea = () => {
     }
 
     const { contact_id } = useParams()
-    
+
     const { getContactById, addNewMessageToContact } = useContext(ContactsConText)
     const contact_selected = getContactById(contact_id)
 
 
+
     const [mensajes, setMensajes] = useState([])
+    // Cargar el texto del localStorage cuando el componente se monta
+    useEffect(() => {
+            const storedText = localStorage.getItem("messageText")
+            if(storedText){
+                setText(storedText)
+            }
+        }, []
+    )
+    // Guardar el texto en localStorage cada vez que cambie
+    useEffect(() => {
+            if(text){
+                localStorage.setItem("messageText", text)
+            }
+        }, [text]
+    )
+
     const handleSubmitUncontrolledForm = (evento) => {
         evento.preventDefault()
         const messageJSX = evento.target
         const nuevoMensaje = {
-            mensaje: messageJSX.text.value,
+            mensaje: text,
             hora: getFormattedDateMMHHDDMM()
         }
+        console.log('setText: ', mensajes)
         
         addNewMessageToContact(nuevoMensaje, contact_id)
 
         setMensajes([...mensajes, nuevoMensaje])
-        messageJSX.reset()
+        setText("") // Limpiar el estado y el campo de texto
+        messageJSX.reset() // Resetear el formulario
+        localStorage.removeItem("messageText") // Limpiar el texto guardado en localStorage
+
+        console.log('setText: ', mensajes)
     }
 
     const contenedorRef = useRef(null)
@@ -49,6 +72,9 @@ const TextArea = () => {
         }
     }, [mensajes]);
 
+    const handleChangeText = (event) => {
+        setText(event.target.value) // Actualizar el estado con el nuevo valor del input
+    }
 
     return (
         <div>
@@ -66,7 +92,7 @@ const TextArea = () => {
                                     onSubmit={handleSubmitUncontrolledForm}
                                 >
                                     <label htmlFor="text"></label>
-                                    <input type='text' id='text' name='text' placeholder='Escribe un mensaje' />
+                                    <input type='text' id='text' name='text' placeholder='Escribe un mensaje' value={text} onChange={handleChangeText} />
                                 </form>
                             </div>
                             {!ocultarMicrofono && <FaMicrophone className="icon-teclado-micro" />}

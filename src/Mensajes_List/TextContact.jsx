@@ -18,14 +18,32 @@ const ContactsConTextProvider = ({children}) =>{
     const addNewMessageToContact = (text, contact_id) => {
         const new_message = {emisor:'yo', text: text, id: uuidv4(), hora: getFormattedDateMMHHDDMM(), status: 'no-visto'}
 
-        setContactsState(
-            (prev_contact_state) => {
-                const contact_found = prev_contact_state.find(contact => contact.id == contact_id)
-                contact_found.mensajes_list.push(new_message)
-
-                return [...prev_contact_state]
+        setContactsState((prev_contact_state) => {
+            return prev_contact_state.map((contact) => {
+                if (contact.id === Number(contact_id)) {
+                    return {
+                        ...contact,
+                        mensajes_list: [...contact.mensajes_list, new_message]
+                    };
+                }
+                return contact
+            })
             }
         )
+    }
+
+    const saveDraftToContact = (draft, contact_id) => {
+        setContactsState((prev_contact_state) => {
+            return prev_contact_state.map((contact) => {
+                if (contact.id === Number(contact_id)) {
+                    return {
+                        ...contact,
+                        draft: draft
+                    }
+                }
+                return contact
+            })
+        })
     }
 
 
@@ -34,7 +52,8 @@ const ContactsConTextProvider = ({children}) =>{
             {
                 contacts_state: contacts_state,
                 getContactById: getContactById,
-                addNewMessageToContact: addNewMessageToContact
+                addNewMessageToContact: addNewMessageToContact,
+                saveDraftToContact: saveDraftToContact
             }
             }
         >
