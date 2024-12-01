@@ -6,6 +6,7 @@ import { IoSend } from "react-icons/io5"
 import { MessajeList } from "./WhatsApp"
 import { ContactsConText } from "./Mensajes_List/TextContact"
 import { useParams } from "react-router-dom"
+import getFormattedDateMMHHDDMM from "./helpers/getFormattedDate"
 
 
 const TextArea = () => {
@@ -44,7 +45,8 @@ const TextArea = () => {
         const messageJSX = evento.target
         const nuevoMensaje = {
             mensaje: texto,
-            contact_id
+            contact_id,
+            hora: getFormattedDateMMHHDDMM()
         }
 
         // Actualizar el estado con el nuevo mensaje, manteniendo los mensajes anteriores
@@ -53,7 +55,7 @@ const TextArea = () => {
             return nuevosMensajes
         })
         
-        addNewMessageToContact(nuevoMensaje, contact_id)
+        addNewMessageToContact(nuevoMensaje, contact_id, nuevoMensaje.hora)
         setText("") // Limpiar el estado y el campo de texto
         messageJSX.reset() // Resetear el formulario
     }
@@ -95,9 +97,7 @@ const TextArea = () => {
                     </div>
                     <div ref={contenedorRef}>
                         {contact_selected?.mensajes_list.map((ms, index) => (
-                            <div>
-                                <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
-                            </div>
+                            <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
                         ))}
                     </div>
                 </div>

@@ -1,4 +1,3 @@
-const list_mensajes = JSON.parse(localStorage.getItem("messageText")) || []
 
 const contacts = [
     {
@@ -80,5 +79,21 @@ const contacts = [
         ]
     }
 ]
+const list_mensajes = JSON.parse(localStorage.getItem("messageText"))
+let contact_found;
+if(list_mensajes === null){
+}
+else{
+    if(list_mensajes.length > 0){
+        for(let i=0; i <= list_mensajes.length; i++){
+            contact_found = contacts.find(contact => contact.id == list_mensajes[i].contact_id)
+            const texto = { texto: list_mensajes[i].mensaje, hora: list_mensajes[i].hora}
+            contact_found.mensajes_list.push(texto)
+            console.log(i)
+            console.log(contact_found)
+            console.log('list-id',list_mensajes[i].contact_id)
+        }
+    }
+}
 
 export default contacts
