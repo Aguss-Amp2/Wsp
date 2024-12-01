@@ -7,6 +7,7 @@ import { MessajeList } from "./WhatsApp"
 import { ContactsConText } from "./Mensajes_List/TextContact"
 import { useParams } from "react-router-dom"
 import getFormattedDateMMHHDDMM from "./helpers/getFormattedDate"
+import contacts from "./Mensajes_List/contacts"
 
 
 const TextArea = () => {
@@ -96,7 +97,7 @@ const TextArea = () => {
                         </div>
                     </div>
                     <div ref={contenedorRef}>
-                        {contact_selected?.mensajes_list.map((ms, index) => (
+                        {contact_selected?.mensajes_list?.map((ms, index) => (
                             <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
                         ))}
                     </div>
