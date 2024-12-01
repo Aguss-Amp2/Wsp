@@ -47,7 +47,7 @@ const MensajesGuardados = () => {
     return (
         <div>
             {contact_found && (
-                <div ref={messagesContRef} className="">
+                <div ref={messagesContRef}>
                     {contact_found.mensajes_list?.map(mensaje => (
                         <div key={mensaje.id}>
                             <MessajeList

@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom"
 
 const TextArea = () => {
     const [ocultarMicrofono, setOcultarMicrofono] = useState(false)
-    const [text, setText] = useState("") // Estado para almacenar el texto en el input
+    const [texto, setText] = useState("") // Estado para almacenar el texto en el input
 
     const handleClickTextarea = () => {
         setOcultarMicrofono(true)
@@ -39,29 +39,25 @@ const TextArea = () => {
     )
     // Guardar el texto en localStorage cada vez que cambie
     useEffect(() => {
-            if(text){
-                localStorage.setItem("messageText", text)
+            if(texto){
+                localStorage.setItem("messageText", texto)
             }
-        }, [text]
+        }, [texto]
     )
-
+    
     const handleSubmitUncontrolledForm = (evento) => {
         evento.preventDefault()
         const messageJSX = evento.target
         const nuevoMensaje = {
-            mensaje: text,
+            mensaje: texto,
             hora: getFormattedDateMMHHDDMM()
         }
-        console.log('setText: ', mensajes)
         
         addNewMessageToContact(nuevoMensaje, contact_id)
 
         setMensajes([...mensajes, nuevoMensaje])
         setText("") // Limpiar el estado y el campo de texto
         messageJSX.reset() // Resetear el formulario
-        localStorage.removeItem("messageText") // Limpiar el texto guardado en localStorage
-
-        console.log('setText: ', mensajes)
     }
 
     const contenedorRef = useRef(null)
@@ -91,8 +87,8 @@ const TextArea = () => {
                                     onClick={handleClickTextarea}
                                     onSubmit={handleSubmitUncontrolledForm}
                                 >
-                                    <label htmlFor="text"></label>
-                                    <input type='text' id='text' name='text' placeholder='Escribe un mensaje' value={text} onChange={handleChangeText} />
+                                    <label htmlFor="texto"></label>
+                                    <input type='text' id='texto' name='texto' placeholder='Escribe un mensaje' value={texto} onChange={handleChangeText} />
                                 </form>
                             </div>
                             {!ocultarMicrofono && <FaMicrophone className="icon-teclado-micro" />}
@@ -100,8 +96,10 @@ const TextArea = () => {
                         </div>
                     </div>
                     <div ref={contenedorRef}>
-                        {mensajes.map((ms, index) => (
-                            <NewMessage key={index} mensaje={ms.mensaje} hora={ms.hora} />
+                        {contact_selected?.mensajes_list.map((ms, index) => (
+                            <div>
+                                <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
+                            </div>
                         ))}
                     </div>
                 </div>

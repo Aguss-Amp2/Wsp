@@ -16,7 +16,7 @@ const ContactsConTextProvider = ({children}) =>{
     }
 
     const addNewMessageToContact = (text, contact_id) => {
-        const new_message = {emisor:'yo', text: text, id: uuidv4(), hora: getFormattedDateMMHHDDMM(), status: 'no-visto'}
+        const new_message = {emisor:'yo', texto: text.mensaje, id: uuidv4(), hora: getFormattedDateMMHHDDMM(), status: 'no-visto'}
 
         setContactsState((prev_contact_state) => {
             return prev_contact_state.map((contact) => {
@@ -24,7 +24,7 @@ const ContactsConTextProvider = ({children}) =>{
                     return {
                         ...contact,
                         mensajes_list: [...contact.mensajes_list, new_message]
-                    };
+                    }
                 }
                 return contact
             })
