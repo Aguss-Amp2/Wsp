@@ -26,8 +26,6 @@ const TextArea = () => {
     const { getContactById, addNewMessageToContact } = useContext(ContactsConText)
     const contact_selected = getContactById(contact_id)
 
-
-
     const [mensajes, setMensajes] = useState([])
     // Cargar el texto del localStorage cuando el componente se monta
     useEffect(() => {
@@ -38,20 +36,21 @@ const TextArea = () => {
         }, []
     )
     // Guardar el texto en localStorage cada vez que cambie
-    useEffect(() => {
-            if(texto){
-                localStorage.setItem("messageText", texto)
-            }
-        }, [texto]
-    )
-    
+
     const handleSubmitUncontrolledForm = (evento) => {
         evento.preventDefault()
         const messageJSX = evento.target
         const nuevoMensaje = {
-            mensaje: texto,
-            hora: getFormattedDateMMHHDDMM()
+            mensaje: texto
         }
+        const storedMessages = JSON.parse(localStorage.getItem("messageText")) || []
+
+        // Agregar el nuevo mensaje al array de mensajes
+        storedMessages.push({ texto })
+
+        // Guardar el array completo en el localStorage
+        localStorage.setItem("messageText", JSON.stringify(storedMessages))
+
         
         addNewMessageToContact(nuevoMensaje, contact_id)
 
@@ -88,7 +87,7 @@ const TextArea = () => {
                                     onSubmit={handleSubmitUncontrolledForm}
                                 >
                                     <label htmlFor="texto"></label>
-                                    <input type='text' id='texto' name='texto' placeholder='Escribe un mensaje' value={texto} onChange={handleChangeText} />
+                                    <input type='text' id='texto' name='texto' placeholder='Escribe un mensaje' onChange={handleChangeText} />
                                 </form>
                             </div>
                             {!ocultarMicrofono && <FaMicrophone className="icon-teclado-micro" />}
