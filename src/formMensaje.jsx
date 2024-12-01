@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import getFormattedDateMMHHDDMM from "./helpers/getFormattedDate"
 import { PiSmileyBold } from "react-icons/pi"
 import { GoPlus } from "react-icons/go"
 import { FaMicrophone } from "react-icons/fa"
@@ -27,34 +26,34 @@ const TextArea = () => {
     const contact_selected = getContactById(contact_id)
 
     const [mensajes, setMensajes] = useState([])
-    // Cargar el texto del localStorage cuando el componente se monta
+    
     useEffect(() => {
-            const storedText = localStorage.getItem("messageText")
-            if(storedText){
-                setText(storedText)
-            }
-        }, []
-    )
-    // Guardar el texto en localStorage cada vez que cambie
+        const storedMessages = JSON.parse(localStorage.getItem("messageText")) || []
+        setMensajes(storedMessages) // Actualizar el estado con los mensajes del localStorage
+    }, [])
+
+    // Guardar los mensajes en el localStorage cada vez que el estado de mensajes cambie
+    useEffect(() => {
+        if (mensajes.length > 0) {
+            localStorage.setItem("messageText", JSON.stringify(mensajes))
+        }
+    }, [mensajes])
 
     const handleSubmitUncontrolledForm = (evento) => {
         evento.preventDefault()
         const messageJSX = evento.target
         const nuevoMensaje = {
-            mensaje: texto
+            mensaje: texto,
+            contact_id
         }
-        const storedMessages = JSON.parse(localStorage.getItem("messageText")) || []
 
-        // Agregar el nuevo mensaje al array de mensajes
-        storedMessages.push({ texto })
-
-        // Guardar el array completo en el localStorage
-        localStorage.setItem("messageText", JSON.stringify(storedMessages))
-
+        // Actualizar el estado con el nuevo mensaje, manteniendo los mensajes anteriores
+        setMensajes((prevMensajes) => {
+            const nuevosMensajes = [...prevMensajes, nuevoMensaje]
+            return nuevosMensajes
+        })
         
         addNewMessageToContact(nuevoMensaje, contact_id)
-
-        setMensajes([...mensajes, nuevoMensaje])
         setText("") // Limpiar el estado y el campo de texto
         messageJSX.reset() // Resetear el formulario
     }
@@ -110,7 +109,7 @@ const TextArea = () => {
 const NewMessage = ({ mensaje, hora }) => {
     return (
         <div>
-            <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={'no-visto'} />
+            <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={'no-visto'}/>
         </div>
     )
 }

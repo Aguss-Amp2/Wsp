@@ -1,3 +1,5 @@
+const list_mensajes = JSON.parse(localStorage.getItem("messageText")) || []
+
 const contacts = [
     {
         nombre: 'Nicoo',
@@ -72,7 +74,7 @@ const contacts = [
                 emisor: 'yo',
                 hora: '23:13',
                 id: 4,
-                texto: 'Estas ahi?',
+                texto: 'fff',
                 status: 'no_enviado'
             },
         ]
