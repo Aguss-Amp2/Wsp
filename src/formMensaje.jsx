@@ -8,6 +8,7 @@ import { ContactsConText } from "./Mensajes_List/TextContact"
 import { useParams } from "react-router-dom"
 import getFormattedDateMMHHDDMM from "./helpers/getFormattedDate"
 import contacts from "./Mensajes_List/contacts"
+import { v4 as uuidv4 } from 'uuid';
 
 
 const TextArea = () => {
@@ -47,7 +48,9 @@ const TextArea = () => {
         const nuevoMensaje = {
             mensaje: texto,
             contact_id,
-            hora: getFormattedDateMMHHDDMM()
+            hora: getFormattedDateMMHHDDMM(),
+            id: uuidv4(),
+            emisor: 'yo'
         }
 
         // Actualizar el estado con el nuevo mensaje, manteniendo los mensajes anteriores
@@ -56,7 +59,7 @@ const TextArea = () => {
             return nuevosMensajes
         })
         
-        addNewMessageToContact(nuevoMensaje, contact_id, nuevoMensaje.hora)
+        addNewMessageToContact(nuevoMensaje, contact_id, nuevoMensaje.hora, nuevoMensaje.id, nuevoMensaje.emisor)
         setText("") // Limpiar el estado y el campo de texto
         messageJSX.reset() // Resetear el formulario
     }
@@ -97,7 +100,7 @@ const TextArea = () => {
                         </div>
                     </div>
                     <div ref={contenedorRef}>
-                        {contact_selected?.mensajes_list?.map((ms, index) => (
+                        {contacts.mensajes_list?.map((ms, index) => (
                             <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
                         ))}
                     </div>
