@@ -78,19 +78,20 @@ const contacts = [
         ]
     }
 ]
-const list_mensajes = JSON.parse(localStorage.getItem("messageText"))
-let contact_found
+// const list_mensajes = JSON.parse(localStorage.getItem("messageText"))
+// let contact_found
 
-if(list_mensajes === null){
-}
-else{
-    if(list_mensajes.length > 0){
-        list_mensajes.map((mensaje) => {
-            contact_found = contacts.find(contact => contact.id == mensaje.contact_id)
-            const texto = { texto: mensaje.mensaje, hora: mensaje.hora, emisor: mensaje.emisor }
-            contact_found.mensajes_list.push(texto)
-        })
-    }
-}
+// if(list_mensajes === null){
+// }
+// else{
+//     if(list_mensajes.length > 0){
+//         list_mensajes.map((mensaje) => {
+//             contact_found = contacts.find(contact => contact.id == mensaje.contact_id)
+//             const texto = { texto: mensaje.mensaje, hora: mensaje.hora, emisor: mensaje.emisor }
+//             contact_found.mensajes_list.push(texto)
+//             console.log(texto)
+//         })
+//     }
+// }
 
 export default contacts

@@ -62,11 +62,12 @@ const TextArea = () => {
         const nuevoMensaje = {
             mensaje: texto,  // Aquí el mensaje que el usuario ingresa
             contact_id,
-            emisor: "yo",
+            emisor: 'yo',
             id: uuidv4(),
             hora: getFormattedDateMMHHDDMM(),
             status: "no-visto"
         };
+        console.log(nuevoMensaje)
     
         // Agregar el mensaje al estado global (y duplicarlo)
         addNewMessageToContact(nuevoMensaje, contact_id); 
@@ -111,7 +112,7 @@ const TextArea = () => {
                     </div>
                     <div ref={contenedorRef}>
                         {contact_selected?.mensajes_list?.map((ms) => (
-                            <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} />
+                            <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} emisor={ms.emisor} />
                         ))}
                     </div>
                 </div>
@@ -120,10 +121,13 @@ const TextArea = () => {
     )
 }
 
-const NewMessage = ({ mensaje, hora }) => {
+const NewMessage = ({ mensaje, hora, emisor }) => {
     return (
         <div>
-            <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={'no-visto'}/>
+            {
+                emisor != 'tu' ? <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={'no-visto'}/>
+                : <MessajeList texto={mensaje} hora={hora} emisor={emisor} status={'no-visto'}/>
+            }
         </div>
     )
 }

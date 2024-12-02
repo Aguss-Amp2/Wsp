@@ -8,7 +8,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import { IoIosArrowDown } from "react-icons/io";
 import { BsCheckAll, BsFillCameraVideoFill } from "react-icons/bs";
 import { PiClockCountdownBold } from "react-icons/pi";
-import ChatsList, { MensajesGuardados } from "./Chats";
+import ChatsList from "./Chats";
 import TextArea from "./formMensaje";
 import Perfil from "./ImgPerfil";
 
@@ -64,7 +64,6 @@ function WhatsApp() {
         </div>
         <div className="contenedor-msj">
           <div className="separacion-teclado">
-            <MensajesGuardados/>
             <TextArea/>
           </div>
         </div>
