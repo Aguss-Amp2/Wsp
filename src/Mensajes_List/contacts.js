@@ -87,7 +87,7 @@ else{
     if(list_mensajes.length > 0){
         list_mensajes.map((mensaje) => {
             contact_found = contacts.find(contact => contact.id == mensaje.contact_id)
-            const texto = { texto: mensaje.mensaje, hora: mensaje.hora, emisor: mensaje.emisor, id: mensaje.id }
+            const texto = { texto: mensaje.mensaje, hora: mensaje.hora, emisor: mensaje.emisor }
             contact_found.mensajes_list.push(texto)
         })
     }

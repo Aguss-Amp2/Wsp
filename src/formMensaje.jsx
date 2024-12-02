@@ -7,7 +7,6 @@ import { MessajeList } from "./WhatsApp"
 import { ContactsConText } from "./Mensajes_List/TextContact"
 import { useParams } from "react-router-dom"
 import getFormattedDateMMHHDDMM from "./helpers/getFormattedDate"
-import contacts from "./Mensajes_List/contacts"
 import { v4 as uuidv4 } from 'uuid';
 
 
@@ -25,44 +24,54 @@ const TextArea = () => {
 
     const { contact_id } = useParams()
 
-    const { getContactById, addNewMessageToContact } = useContext(ContactsConText)
+    const { setContactsState, contacts_state, getContactById, addNewMessageToContact } = useContext(ContactsConText)
     const contact_selected = getContactById(contact_id)
 
-    const [mensajes, setMensajes] = useState([])
+    const mensajes = contact_selected?.mensajes_list || [];
     
     useEffect(() => {
-        const storedMessages = JSON.parse(localStorage.getItem("messageText")) || []
-        setMensajes(storedMessages) // Actualizar el estado con los mensajes del localStorage
-    }, [])
-
-    // Guardar los mensajes en el localStorage cada vez que el estado de mensajes cambie
-    useEffect(() => {
-        if (mensajes.length > 0) {
-            localStorage.setItem("messageText", JSON.stringify(mensajes))
+        // Cargar datos al montar el componente
+        const storedContacts = localStorage.getItem("contacts");
+        if (storedContacts) {
+            const contactsFromStorage = JSON.parse(storedContacts);
+    
+            // Asegurarse de no tener mensajes duplicados al cargar desde localStorage
+            const uniqueContacts = contactsFromStorage.map(contact => {
+                // Filtrar los mensajes duplicados en base a su texto y hora
+                const uniqueMessages = contact.mensajes_list.filter((msg, index, self) =>
+                    index === self.findIndex((m) => m.texto === msg.texto && m.hora === msg.hora)
+                );
+                return { ...contact, mensajes_list: uniqueMessages };
+            });
+    
+            setContactsState(uniqueContacts);  // Cargar solo contactos con mensajes únicos
         }
-    }, [mensajes])
+    }, []);  // Solo se ejecuta una vez al montar el componente
+    
+    
+    useEffect(() => {
+        if (contacts_state.length) {
+            localStorage.setItem("contacts", JSON.stringify(contacts_state));
+        }
+    }, [contacts_state]); // Solo guarda cuando contacts_state cambie
 
     const handleSubmitUncontrolledForm = (evento) => {
-        evento.preventDefault()
-        const messageJSX = evento.target
+        evento.preventDefault();
+        if (!texto.trim()) return; // Evita agregar mensajes vacíos
+    
         const nuevoMensaje = {
-            mensaje: texto,
+            mensaje: texto,  // Aquí el mensaje que el usuario ingresa
             contact_id,
-            hora: getFormattedDateMMHHDDMM(),
+            emisor: "yo",
             id: uuidv4(),
-            emisor: 'yo'
-        }
-
-        // Actualizar el estado con el nuevo mensaje, manteniendo los mensajes anteriores
-        setMensajes((prevMensajes) => {
-            const nuevosMensajes = [...prevMensajes, nuevoMensaje]
-            return nuevosMensajes
-        })
-        
-        addNewMessageToContact(nuevoMensaje, contact_id, nuevoMensaje.hora, nuevoMensaje.id, nuevoMensaje.emisor)
-        setText("") // Limpiar el estado y el campo de texto
-        messageJSX.reset() // Resetear el formulario
-    }
+            hora: getFormattedDateMMHHDDMM(),
+            status: "no-visto"
+        };
+    
+        // Agregar el mensaje al estado global (y duplicarlo)
+        addNewMessageToContact(nuevoMensaje, contact_id); 
+        setText(""); // Limpiar el input
+    };
 
     const contenedorRef = useRef(null)
 
@@ -70,11 +79,12 @@ const TextArea = () => {
         if (contenedorRef.current) {
             contenedorRef.current.scrollIntoView({ behavior: 'smooth' })
         }
-    }, [mensajes]);
+    }, [mensajes])
 
     const handleChangeText = (event) => {
         setText(event.target.value) // Actualizar el estado con el nuevo valor del input
     }
+
 
     return (
         <div>
@@ -92,7 +102,7 @@ const TextArea = () => {
                                     onSubmit={handleSubmitUncontrolledForm}
                                 >
                                     <label htmlFor="texto"></label>
-                                    <input type='text' id='texto' name='texto' placeholder='Escribe un mensaje' onChange={handleChangeText} />
+                                    <input type='text' id='texto' name='texto' placeholder='Escribe un mensaje' value={texto} onChange={handleChangeText} />
                                 </form>
                             </div>
                             {!ocultarMicrofono && <FaMicrophone className="icon-teclado-micro" />}
@@ -100,8 +110,8 @@ const TextArea = () => {
                         </div>
                     </div>
                     <div ref={contenedorRef}>
-                        {contacts.mensajes_list?.map((ms, index) => (
-                            <NewMessage key={index} mensaje={ms.texto} hora={ms.hora} />
+                        {contact_selected?.mensajes_list?.map((ms) => (
+                            <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} />
                         ))}
                     </div>
                 </div>

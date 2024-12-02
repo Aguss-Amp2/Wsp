@@ -15,22 +15,46 @@ const ContactsConTextProvider = ({children}) =>{
         )
     }
 
-    const addNewMessageToContact = (text, contact_id) => {
-        const new_message = {emisor:'yo', texto: text.mensaje, id: uuidv4(), hora: getFormattedDateMMHHDDMM(), status: 'no-visto'}
-
+    const addNewMessageToContact = (newMessage, contact_id) => {
+        const { mensaje } = newMessage;
+    
+        // Buscar el contacto correspondiente
+        const contact = contacts_state.find(contact => contact.id === Number(contact_id));
+    
+        // Verificar si el mensaje ya existe en la lista de mensajes
+        const isDuplicate = contact?.mensajes_list.some(
+            msg => msg.texto === mensaje && msg.hora === newMessage.hora
+        );
+    
+        // Si el mensaje ya existe, no lo agregamos
+        if (isDuplicate) {
+            console.log("Mensaje duplicado detectado, no se agregará.");
+            return; // Salir de la función para evitar agregar el mensaje duplicado
+        }
+    
+        // Crear el nuevo mensaje
+        const new_message = {
+            texto: mensaje,
+            id: uuidv4(), // Generar un nuevo id único para cada mensaje
+            hora: getFormattedDateMMHHDDMM(), // Generar hora con formato adecuado
+            status: "no-visto",
+        };
+    
+        // Actualizar el estado de los contactos, añadiendo el mensaje solo si no es duplicado
         setContactsState((prev_contact_state) => {
             return prev_contact_state.map((contact) => {
                 if (contact.id === Number(contact_id)) {
                     return {
                         ...contact,
-                        mensajes_list: [...contact.mensajes_list, new_message]
-                    }
+                        mensajes_list: [...contact.mensajes_list, new_message], // Agregar solo el mensaje no duplicado
+                    };
                 }
-                return contact
-            })
-            }
-        )
-    }
+                return contact;
+            });
+        });
+    };
+    
+    
 
     const saveDraftToContact = (draft, contact_id) => {
         setContactsState((prev_contact_state) => {
@@ -53,7 +77,8 @@ const ContactsConTextProvider = ({children}) =>{
                 contacts_state: contacts_state,
                 getContactById: getContactById,
                 addNewMessageToContact: addNewMessageToContact,
-                saveDraftToContact: saveDraftToContact
+                saveDraftToContact: saveDraftToContact,
+                setContactsState: setContactsState
             }
             }
 >
