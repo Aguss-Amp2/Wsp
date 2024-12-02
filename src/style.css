@@ -499,7 +499,7 @@
 }
 
 .contenedor-msj{
-    overflow-y: scroll;
+    overflow-y: auto;
     max-height: 600px;
 }
 

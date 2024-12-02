@@ -112,7 +112,9 @@ const TextArea = () => {
                     </div>
                     <div ref={contenedorRef}>
                         {contact_selected?.mensajes_list?.map((ms) => (
-                            <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} emisor={ms.emisor} />
+                            <div>
+                                <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} emisor={ms.emisor} status={ms.status} />
+                            </div>
                         ))}
                     </div>
                 </div>
@@ -121,12 +123,12 @@ const TextArea = () => {
     )
 }
 
-const NewMessage = ({ mensaje, hora, emisor }) => {
+const NewMessage = ({ mensaje, hora, emisor, status }) => {
     return (
         <div>
             {
-                emisor != 'tu' ? <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={'no-visto'}/>
-                : <MessajeList texto={mensaje} hora={hora} emisor={emisor} status={'no-visto'}/>
+                emisor != 'tu' ? <MessajeList texto={mensaje} hora={hora} emisor={'yo'} status={status}/>
+                : <MessajeList texto={mensaje} hora={hora} emisor={emisor} status={status}/>
             }
         </div>
     )

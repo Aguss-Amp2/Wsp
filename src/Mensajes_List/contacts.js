@@ -72,26 +72,36 @@ const contacts = [
                 emisor: 'yo',
                 hora: '23:13',
                 id: 4,
-                texto: 'fff',
+                texto: '??',
                 status: 'no_enviado'
             },
         ]
+    },
+    {
+        nombre: 'Luz',
+        avatar: 'https://ca.slack-edge.com/T07EJ2FLZ2R-U07ELATQ5DL-g4b35bd68d0e-48',
+        id: 3,
+        ultMensj: '',
+        mensajes: '',
+        hora: '20:45',
+        statusMsj: 'false',
+        mensajes_list: [
+            {
+                emisor: 'tu',
+                hora: '20:40',
+                id: 1,
+                texto: '¡Hola Agus! ¿Cómo va tu día?',
+                status: 'visto'
+            },
+            {
+                emisor: 'yo',
+                hora: '20:45',
+                id: 2,
+                texto: 'Genial, estaba pensando en organizar algo. ¿Te apuntas?',
+                status: 'visto'
+            }
+        ]
     }
 ]
-// const list_mensajes = JSON.parse(localStorage.getItem("messageText"))
-// let contact_found
-
-// if(list_mensajes === null){
-// }
-// else{
-//     if(list_mensajes.length > 0){
-//         list_mensajes.map((mensaje) => {
-//             contact_found = contacts.find(contact => contact.id == mensaje.contact_id)
-//             const texto = { texto: mensaje.mensaje, hora: mensaje.hora, emisor: mensaje.emisor }
-//             contact_found.mensajes_list.push(texto)
-//             console.log(texto)
-//         })
-//     }
-// }
 
 export default contacts
