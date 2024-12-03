@@ -11,9 +11,14 @@ import { PiClockCountdownBold } from "react-icons/pi";
 import ChatsList from "./Chats";
 import TextArea from "./formMensaje";
 import Perfil from "./ImgPerfil";
+import contacts from "./Mensajes_List/contacts";
+import { useParams } from "react-router-dom";
 
 
 function WhatsApp() {
+
+  const { contact_id } = useParams()
+
   return (
     <div className="padre">
       <aside className="aside-container">
@@ -50,9 +55,11 @@ function WhatsApp() {
         </nav>
         <ChatsList/>
       </header>
-      <section className="mensagges-secction fondo-chat">
+      {
+        contact_id ?
+        <section className="mensagges-secction fondo-chat">
         <div className="header-chat">
-          <Perfil/>
+          <Perfil />
           <div className="contenedor-header-chat">
             <div className="top-left-chat">
               <BsFillCameraVideoFill className="icon-chat-top-left"/>
@@ -68,6 +75,9 @@ function WhatsApp() {
           </div>
         </div>
       </section>
+      :
+      <section className="mensagges-secction fondo-sin-chat"></section>
+      }
     </div>
   )
 }
