@@ -66,21 +66,21 @@ const TextArea = () => {
             id: uuidv4(),
             hora: getFormattedDateMMHHDDMM(),
             status: "no-visto"
-        };
-        console.log(nuevoMensaje)
+        }
     
         // Agregar el mensaje al estado global (y duplicarlo)
         addNewMessageToContact(nuevoMensaje, contact_id); 
         setText(""); // Limpiar el input
-    };
+    }
 
-    const contenedorRef = useRef(null)
-
+    const contenedorRef = useRef(null);
+    const ultimoMensajeRef = useRef(null); // Nueva referencia para el último mensaje
+    
     useEffect(() => {
-        if (contenedorRef.current) {
-            contenedorRef.current.scrollIntoView({ behavior: 'smooth' })
+        if (ultimoMensajeRef.current) {
+            ultimoMensajeRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [mensajes])
+    }, [mensajes]); // Escucha los cambios en la lista de mensajes
 
     const handleChangeText = (event) => {
         setText(event.target.value) // Actualizar el estado con el nuevo valor del input
@@ -111,8 +111,9 @@ const TextArea = () => {
                         </div>
                     </div>
                     <div ref={contenedorRef}>
-                        {contact_selected?.mensajes_list?.map((ms) => (
-                            <div>
+                        {contact_selected?.mensajes_list?.map((ms, index) => (
+                            <div key={ms.id}
+                            ref={index === mensajes.length - 1 ? ultimoMensajeRef : null}>
                                 <NewMessage key={ms.id} mensaje={ms.texto} hora={ms.hora} emisor={ms.emisor} status={ms.status} />
                             </div>
                         ))}
