@@ -552,6 +552,16 @@
         height: 100vh;
     }
 
+    .container-nav{
+        gap: 20px;
+    }
+
+    .cont-ul li{
+        width: auto;
+        white-space: nowrap;
+        font-size: 14px;
+    }
+
     .contenedor-msj {
         max-height: 600px;
     }
