@@ -247,7 +247,7 @@
     background-size: cover; /* Asegura que la imagen cubra todo el div */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-position: center; /* Centra la imagen dentro del div */
-    width: 100%; /* Ancho del div (ajústalo como necesites) */
+    width: 100%;
     height: 100vh;
 }
 
@@ -256,7 +256,7 @@
     background-size: cover; /* Asegura que la imagen cubra todo el div */
     background-repeat: no-repeat; /* Evita que la imagen se repita */
     background-position: center; /* Centra la imagen dentro del div */
-    width: 100%; /* Ancho del div (ajústalo como necesites) */
+    width: 100%;
     height: 100vh;
 }
 
@@ -501,6 +501,82 @@
 .contenedor-msj{
     overflow-y: auto;
     max-height: 600px;
+}
+
+/* Ajustes responsivos */
+
+@media (max-width: 1050px) {
+
+    .fondo-sin-chat {
+        background-size: cover; /* Asegura que la imagen cubra todo el div */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
+        background-position: center; /* Centra la imagen dentro del div */
+        width: 100%;
+        height: 100vh;
+    }
+
+    .contenedor-msj {
+        max-height: 600px;
+    }
+
+    .header-container{
+        width: 380px;
+        height: auto;
+    }
+
+    .chat-teclado{
+        width: 620px;
+        justify-content: space-between;
+    }
+
+    .input-teclado input {
+        width: 420px; /* Asegura que el input ocupe todo el contenedor */
+        box-sizing: border-box; /* Incluye padding y bordes en el ancho total */
+        overflow: hidden; /* Esconde cualquier texto que se desborde */
+        white-space: nowrap; /* Evita que el texto haga un salto de línea */
+        text-overflow: ellipsis; /* Añade "..." al final si el texto es muy largo */
+    }
+
+    .teclado {
+        width: 460px;
+    }
+}
+
+@media (max-width: 720px) {
+
+    .fondo-sin-chat {
+        background-size: cover; /* Asegura que la imagen cubra todo el div */
+        background-repeat: no-repeat; /* Evita que la imagen se repita */
+        background-position: center; /* Centra la imagen dentro del div */
+        width: 100%;
+        height: 100vh;
+    }
+
+    .contenedor-msj {
+        max-height: 600px;
+    }
+
+    .header-container{
+        width: 280px;
+        height: auto;
+    }
+
+    .chat-teclado{
+        width: 380px;
+        justify-content: space-between;
+    }
+
+    .input-teclado input {
+        width: 200px; /* Asegura que el input ocupe todo el contenedor */
+        box-sizing: border-box; /* Incluye padding y bordes en el ancho total */
+        overflow: hidden; /* Esconde cualquier texto que se desborde */
+        white-space: nowrap; /* Evita que el texto haga un salto de línea */
+        text-overflow: ellipsis; /* Añade "..." al final si el texto es muy largo */
+    }
+
+    .teclado {
+        width: 230px;
+    }
 }
 
 .contenedor-msj::-webkit-scrollbar{
