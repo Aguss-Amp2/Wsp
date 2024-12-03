@@ -505,7 +505,7 @@
 
 /* Ajustes responsivos */
 
-@media (max-width: 1050px) {
+@media (max-width: 1050px){
 
     .fondo-sin-chat {
         background-size: cover; /* Asegura que la imagen cubra todo el div */
